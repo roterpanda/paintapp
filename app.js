@@ -8,21 +8,22 @@ let currentBGColor = "red";
 //Classes and Objects
 
 class DrawingObj {
-    constructor(posX, posY, type) {
+    constructor(posX, posY, type, fillColor) {
         this.posX = posX;
         this.posY = posY;
         this.type = type;
+        this.fillColor = fillColor;
     }
 }
 
 const paintController = {
     paintStack: [],
     draw: function (ctx) {
-        ctx.fillStyle = currentBGColor;
+
         ctx.strokeStyle = currentFGColor;
 
         this.paintStack.forEach((dObj) => {
-
+            ctx.fillStyle = dObj.fillColor;
             switch (dObj.type) {
                 case "rect":
                     ctx.strokeRect(dObj.posX, dObj.posY, 60, 60);
@@ -38,7 +39,7 @@ const paintController = {
     }
 }
 
-const rect1 = new DrawingObj(80, 5, "rect");
+const rect1 = new DrawingObj(80, 5, "rect", "yellow");
 
 console.log(paintController.addObj(rect1));
 
