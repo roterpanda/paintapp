@@ -2,6 +2,9 @@
 const canvas = document.getElementById("mainCanvas");
 const ctx = canvas.getContext("2d");
 
+let currentFGColor = "black";
+let currentBGColor = "red";
+
 //Classes and Objects
 
 class DrawingObj {
@@ -15,23 +18,27 @@ class DrawingObj {
 const paintController = {
     paintStack: [],
     draw: function (ctx) {
+        ctx.fillStyle = currentBGColor;
+        ctx.strokeStyle = currentFGColor;
 
         this.paintStack.forEach((dObj) => {
 
             switch (dObj.type) {
                 case "rect":
-                    alert("rectangle");
+                    ctx.strokeRect(dObj.posX, dObj.posY, 60, 60);
+                    ctx.fillRect(dObj.posX, dObj.posY, 60, 60);
+
                     break;
             }
 
         })
     },
     addObj: function (obj) {
-        return this.paintStack.push(obj);
+        this.paintStack.push(obj);
     }
 }
 
-const rect1 = new DrawingObj(5, 5, "rect");
+const rect1 = new DrawingObj(80, 5, "rect");
 
 console.log(paintController.addObj(rect1));
 
