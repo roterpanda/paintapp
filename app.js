@@ -11,10 +11,11 @@ const rectBtn = document.getElementById("rect");
 //Classes and Objects
 
 class DrawingObj {
-    constructor(posX, posY, type) {
+    constructor(posX, posY, type, fillColor) {
         this.posX = posX;
         this.posY = posY;
         this.type = type;
+        this.fillColor = fillColor;
     }
 }
 
@@ -22,11 +23,11 @@ const paintController = {
     paintStack: [],
     drawingState: "NO_TOOL",
     draw: function (ctx) {
-        ctx.fillStyle = currentBGColor;
+
         ctx.strokeStyle = currentFGColor;
 
         this.paintStack.forEach((dObj) => {
-
+            ctx.fillStyle = dObj.fillColor;
             switch (dObj.type) {
                 case "rect":
                     ctx.strokeRect(dObj.posX, dObj.posY, 60, 60);
