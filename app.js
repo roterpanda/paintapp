@@ -5,6 +5,9 @@ const ctx = canvas.getContext("2d");
 let currentFGColor = "black";
 let currentBGColor = "red";
 
+//Select tool buttons
+const rectBtn = document.getElementById("rect");
+
 //Classes and Objects
 
 class DrawingObj {
@@ -17,6 +20,7 @@ class DrawingObj {
 
 const paintController = {
     paintStack: [],
+    drawingState: "NO_TOOL",
     draw: function (ctx) {
         ctx.fillStyle = currentBGColor;
         ctx.strokeStyle = currentFGColor;
@@ -38,9 +42,10 @@ const paintController = {
     }
 }
 
-const rect1 = new DrawingObj(80, 5, "rect");
+rectBtn.addEventListener("click", () => {
+    paintController.drawingState = "RECT_STATE_1";
+})
 
-console.log(paintController.addObj(rect1));
 
 paintController.draw(ctx);
 
