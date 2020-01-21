@@ -19,10 +19,21 @@ class DrawingObj {
     }
 }
 
+class Rect extends DrawingObj {
+    constructor(posX, posY, fillColor, w, h) {
+        super(posX, posY, "rect", fillColor);
+
+        this.w = w;
+        this.h = h;
+    }
+}
+
 const paintController = {
     paintStack: [],
     drawingState: "NO_TOOL",
     draw: function (ctx) {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.strokeStyle = currentFGColor;
 
@@ -43,11 +54,17 @@ const paintController = {
     }
 }
 
-rectBtn.addEventListener("click", () => {
+rectBtn.addEventListener("click", (e) => {
     paintController.drawingState = "RECT_STATE_1";
+    console.log(paintController.drawingState);
+
+    let rect1 = new Rect(5, 5, currentBGColor, 100, 100);
+
+    paintController.addObj(rect1);
+    console.log(paintController.paintStack);
+    paintController.draw(ctx);
+
 })
 
-
-paintController.draw(ctx);
 
 
