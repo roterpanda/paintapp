@@ -55,15 +55,7 @@ const paintController = {
 }
 
 rectBtn.addEventListener("click", (e) => {
-    paintController.drawingState = "RECT_STATE_1";
-    console.log(paintController.drawingState);
-
-    let rect1 = new Rect(5, 5, currentBGColor, 100, 100);
-
-    paintController.addObj(rect1);
-    console.log(paintController.paintStack);
-    paintController.draw(ctx);
-
+    console.log(paintController.drawingState = (paintController.drawingState === "NO_TOOL") ? "RECT_STATE_1" : "NO_TOOL");
 })
 
 
