@@ -55,8 +55,22 @@ const paintController = {
 }
 
 rectBtn.addEventListener("click", (e) => {
-    console.log(paintController.drawingState = (paintController.drawingState === "NO_TOOL") ? "RECT_STATE_1" : "NO_TOOL");
-})
+    paintController.drawingState = (paintController.drawingState === "NO_TOOL") ? "RECT_STATE_1" : "NO_TOOL";
+    console.log(paintController.drawingState);
+});
 
+
+canvas.addEventListener("click", (e) => {
+
+    switch (paintController.drawingState) {
+        case "RECT_STATE_1":
+            let tempRect = new Rect(e.clientX, e.clientY, currentBGColor, 50, 50);
+            console.log(tempRect);
+            paintController.addObj(tempRect);
+            paintController.draw(ctx);
+            break;
+    }
+
+});
 
 
