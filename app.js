@@ -31,6 +31,8 @@ class Rect extends DrawingObj {
 const paintController = {
     paintStack: [],
     drawingState: "NO_TOOL",
+    tempX: 0,
+    tempY: 0,
     draw: function (ctx) {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -41,8 +43,8 @@ const paintController = {
             ctx.fillStyle = dObj.fillColor;
             switch (dObj.type) {
                 case "rect":
-                    ctx.strokeRect(dObj.posX, dObj.posY, 60, 60);
-                    ctx.fillRect(dObj.posX, dObj.posY, 60, 60);
+                    ctx.strokeRect(dObj.posX, dObj.posY, dObj.w, dObj.h);
+                    ctx.fillRect(dObj.posX, dObj.posY, dObj.w, dObj.h);
 
                     break;
             }
@@ -64,11 +66,19 @@ canvas.addEventListener("click", (e) => {
 
     switch (paintController.drawingState) {
         case "RECT_STATE_1":
-            let tempRect = new Rect(e.clientX, e.clientY, currentBGColor, 50, 50);
-            console.log(tempRect);
+            paintController.tempX = e.clientX;
+            paintController.tempY = e.clientY;
+            paintController.drawingState = "RECT_STATE_2";
+            break;
+        case "RECT_STATE_2":
+            let tempRect = new Rect(paintController.tempX,
+                paintController.tempY,
+                currentBGColor,
+                e.clientX - paintController.tempX,
+                e.clientY - paintController.tempY);
             paintController.addObj(tempRect);
             paintController.draw(ctx);
-            break;
+            paintController.drawingState = "NO_TOOL";
     }
 
 });
