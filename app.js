@@ -7,6 +7,7 @@ let currentBGColor = "red";
 
 //Select tool buttons
 const rectBtn = document.getElementById("rect");
+const colorBGBtn = document.getElementById("BGColor");
 
 //Classes and Objects
 
@@ -56,11 +57,17 @@ const paintController = {
     }
 }
 
+//Event Listeners
+
 rectBtn.addEventListener("click", (e) => {
     paintController.drawingState = (paintController.drawingState === "NO_TOOL") ? "RECT_STATE_1" : "NO_TOOL";
     console.log(paintController.drawingState);
 });
 
+
+colorBGBtn.addEventListener("input", () => {
+    currentBGColor = colorBGBtn.value;
+});
 
 canvas.addEventListener("click", (e) => {
 
