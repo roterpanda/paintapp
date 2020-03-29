@@ -32,8 +32,7 @@ class Rect extends DrawingObj {
 const paintController = {
     paintStack: [],
     drawingState: "NO_TOOL",
-    tempX: 0,
-    tempY: 0,
+    tempCoords: { x: 0, y: 0 },
     draw: function (ctx) {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -52,9 +51,26 @@ const paintController = {
 
         })
     },
+    drawHelper: function (ctx, type, pos1, pos2) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "blue";
+
+        switch (type) {
+            case "rect":
+
+                this.draw(ctx);
+                ctx.strokeRect(pos1.x, pos1.y, pos2.x - pos1.x, pos2.y - pos1.y);
+                break;
+        }
+
+    },
     addObj: function (obj) {
         this.paintStack.push(obj);
     }
+}
+
+function getCanvasCoords(ex, ey) {
+    return { x: ex - canvas.offsetLeft, y: ey - canvas.offsetTop };
 }
 
 //Event Listeners
@@ -62,32 +78,42 @@ const paintController = {
 rectBtn.addEventListener("click", (e) => {
     paintController.drawingState = (paintController.drawingState === "NO_TOOL") ? "RECT_STATE_1" : "NO_TOOL";
     console.log(paintController.drawingState);
-});
+})
 
 
 colorBGBtn.addEventListener("input", () => {
     currentBGColor = colorBGBtn.value;
-});
+})
+
+canvas.addEventListener("mousemove", (e) => {
+
+
+    switch (paintController.drawingState) {
+        case "RECT_STATE_2":
+
+            paintController.drawHelper(ctx, "rect", paintController.tempCoords, getCanvasCoords(e.clientX, e.clientY));
+            break;
+    }
+})
 
 canvas.addEventListener("click", (e) => {
 
     switch (paintController.drawingState) {
         case "RECT_STATE_1":
-            paintController.tempX = e.clientX;
-            paintController.tempY = e.clientY;
+            paintController.tempCoords = getCanvasCoords(e.clientX, e.clientY);
             paintController.drawingState = "RECT_STATE_2";
             break;
         case "RECT_STATE_2":
             let tempRect = new Rect(paintController.tempX,
                 paintController.tempY,
                 currentBGColor,
-                e.clientX - paintController.tempX,
-                e.clientY - paintController.tempY);
+                e.clientX - canvas.offsetLeft - paintController.tempX,
+                e.clientY - canvas.offsetTop - paintController.tempY);
             paintController.addObj(tempRect);
             paintController.draw(ctx);
             paintController.drawingState = "NO_TOOL";
     }
 
-});
+})
 
 
